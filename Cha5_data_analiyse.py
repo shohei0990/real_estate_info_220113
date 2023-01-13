@@ -6,6 +6,7 @@ import plotly.express as px
 from matplotlib import pyplot as plt
 import japanize_matplotlib
 
+japanize_matplotlib.japanize() 
 plt.rcParams['font.family'] = 'MS Gothic'
 
 st.set_page_config(
@@ -72,7 +73,7 @@ with extra_configs_2:
     st.write(pre_df_corr)
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------- #
-
+japanize_matplotlib.japanize() 
 st.markdown("---")
 st.subheader('散布図(相関性)')
 text_col, gra_col = st.columns([1,2], gap="medium")
@@ -154,3 +155,4 @@ gra_col4.pyplot(fig4)
 
 
 
+japanize_matplotlib.japanize() 
