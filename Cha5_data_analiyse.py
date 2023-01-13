@@ -65,7 +65,7 @@ st.title('東京都の不動産情報の分析ページ')
 
 extra_configs_0 = st.expander("元のデータ表示") # Extra Configs
 with extra_configs_0:
-     st.write(pre_df.head(10))
+     st.write(pre_df)
 
 extra_configs_1 = st.expander("基本統計量") # Extra Configs
 with extra_configs_1:
