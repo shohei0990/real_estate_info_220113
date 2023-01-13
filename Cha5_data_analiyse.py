@@ -82,7 +82,7 @@ tx = text_col.selectbox('x軸値', ('家賃[万円]', '面積[m^2]', '築年数'
 text_col.text ( '・'+ tx + 'の最大値:'+ str(pre_df[tx].max())  )
 text_col.text ( '・'+ tx + 'の最小値:'+ str(pre_df[tx].min())  )
 text_col.text ( '・'+ tx + 'の平均値:'+ str(pre_df[tx].mean()) )
-ty = text_col.selectbox('y軸値', ('家賃[万円]', '面積[m^2]', '築年数','階数', '敷金[万円]', '礼金[万円]', '階数率', '駅徒歩時間[分]') )
+ty = text_col.selectbox('y軸値', ( '面積[m^2]','家賃[万円]', '築年数','階数', '敷金[万円]', '礼金[万円]', '階数率', '駅徒歩時間[分]') )
 text_col.text ( '・'+ ty + 'の最大値:'+ str(pre_df[tx].max())  )
 text_col.text ( '・'+ ty + 'の最小値:'+ str(pre_df[tx].min())  )
 text_col.text ( '・'+ ty + 'の平均値:'+ str(pre_df[tx].mean()) )
