@@ -154,5 +154,3 @@ sns.boxplot(x=tx5, y=ty6, data=pre_df2)
 gra_col4.pyplot(fig4)
 
 
-
-japanize_matplotlib.japanize() 
