@@ -3,11 +3,10 @@ import streamlit as st
 import seaborn as sns
 import pandas as pd
 import plotly.express as px
-import japanize_matplotlib
 from matplotlib import pyplot as plt
+import japanize_matplotlib
 
-
-plt.rcParams['font.family'] = 'MS Gothic'
+# plt.rcParams['font.family'] = 'MS Gothic'
 
 st.set_page_config(
     page_title="Ex-stream-ly Cool App",
