@@ -3,7 +3,9 @@ import streamlit as st
 import seaborn as sns
 import pandas as pd
 import plotly.express as px
+import japanize_matplotlib
 from matplotlib import pyplot as plt
+
 
 plt.rcParams['font.family'] = 'MS Gothic'
 
