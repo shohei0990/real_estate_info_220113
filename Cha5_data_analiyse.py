@@ -6,7 +6,7 @@ import plotly.express as px
 from matplotlib import pyplot as plt
 import japanize_matplotlib
 
-# plt.rcParams['font.family'] = 'MS Gothic'
+plt.rcParams['font.family'] = 'MS Gothic'
 
 st.set_page_config(
     page_title="Ex-stream-ly Cool App",
@@ -54,7 +54,7 @@ st.sidebar.title('その他設定')
 
 
 # メイン
-st.title('不動産情報の分析ページ')
+st.title('不動産情報の分析ページ1')
 
 extra_configs_0 = st.expander("元のデータ表示") # Extra Configs
 with extra_configs_0:
