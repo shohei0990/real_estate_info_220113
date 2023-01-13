@@ -4,3 +4,5 @@ pandas
 plotly.express 
 matplotlib
 japanize_matplotlib
+numpy
+scikit-learn

@@ -6,6 +6,10 @@ import plotly.express as px
 from matplotlib import pyplot as plt
 import japanize_matplotlib
 
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error as MSE
+
 japanize_matplotlib.japanize() 
 plt.rcParams['font.family'] = 'MS Gothic'
 
@@ -22,7 +26,7 @@ st.set_page_config(
 )
 
 # csvファイルの読み込み
-pre_df = pd.read_csv("realestateinfo_test_ishida91.csv") #pd.DataFrame(pre_data[1:], columns=col_name)  # 一段目をカラム、以下データフレームで取得
+pre_df = pd.read_csv("realestateinfo_test2_ishida91.csv") #pd.DataFrame(pre_data[1:], columns=col_name)  # 一段目をカラム、以下データフレームで取得
 pre_df = pre_df.rename(columns={'面積': '面積[m^2]', '家賃': '家賃[万円]', '敷金': '敷金[万円]', '礼金': '礼金[万円]', '駅徒歩時間': '駅徒歩時間[分]'})
 select_columns_num = ['面積[m^2]', '家賃[万円]', '敷金[万円]','礼金[万円]', '階数率', '築年数', '構造', '階数', '駅徒歩時間[分]']
 pre0_df = pre_df[select_columns_num]
@@ -42,7 +46,7 @@ xmax = st.sidebar.number_input('【散布図】 x軸最大値：', 0, 1000, 100)
 ymax = st.sidebar.number_input('【散布図】 y軸最大値：', 0, 1000, 200)
 
 st.sidebar.title('ヒストグラム表示の設定')
-bins2  = st.sidebar.number_input('【ヒスト】 ビン数：', 0, 500, 50)
+bins2  = st.sidebar.number_input('【ヒスト】 ビン数：', 0, 500, 100)
 xmax2  = st.sidebar.number_input('【ヒスト】 x軸最大値：', 0, 1000, 100)
 ymax2  = st.sidebar.number_input('【ヒスト】 y軸最大値：', 0, 200000, 40000)
 #slider('y軸最大値：', 0, 80000, 40000,1)
@@ -51,11 +55,13 @@ st.sidebar.title('箱ひげ図表示の設定')
 ymax3  = st.sidebar.number_input('【箱ひげ】 y軸最大値：', 0, 1000, 40)
 ymax4  = st.sidebar.number_input('【箱ひげ詳細】 y軸最大値：', 0, 1000, 40)
 
-st.sidebar.title('その他設定')
+st.sidebar.title('家賃予測の設定')
+val5   = st.sidebar.number_input('【家賃予測】 乱数シード指定：', 0, 200, 42)
+ymax5  = st.sidebar.number_input('【家賃予測】 xy軸最大値：'   , 0, 1000, 50)
 
 
 # メイン
-st.title('不動産情報の分析ページ1')
+st.title('東京都の不動産情報の分析ページ')
 
 extra_configs_0 = st.expander("元のデータ表示") # Extra Configs
 with extra_configs_0:
@@ -152,5 +158,43 @@ plt.ylabel(ty6)
 plt.title("箱ひげ図")
 sns.boxplot(x=tx5, y=ty6, data=pre_df2)
 gra_col4.pyplot(fig4)
+
+#-----------------------------------------------------------------------------------------------------
+st.markdown("---")
+st.subheader('ランダムフォレストによる家賃推定')
+tx10 = st.multiselect('学習用データ', ['面積[m^2]','築年数','階数','階数率','駅徒歩時間[分]','区','間取り','市町'], ['面積[m^2]','築年数']) 
+select_columns5 = tx10 
+
+text_col5, gra_col5 = st.columns([1,3], gap="medium")
+
+if text_col5.button('予測開始'):
+    # 学習までのデータ準備
+    data0 = pre_df[:60000] # 学習用
+    test0 = pre_df[60000:] # 比較用
+    data0[select_columns5] = data0[select_columns5].fillna(-99)
+    test0[select_columns5] = test0[select_columns5].fillna(-99)
+    X_train, y_train = pd.get_dummies(data0[select_columns5]), data0['家賃[万円]']
+    X_test , y_test  = pd.get_dummies(test0[select_columns5]), test0['家賃[万円]']
+
+    rf = RandomForestRegressor(random_state=val5)
+    rf.fit(X_train, y_train)
+
+    # 評価データに対する予測を行い、その結果を変数predに代入してください。
+    pred = rf.predict(X_test)
+
+    # 予測精度の確認
+    new = np.sqrt(MSE(y_test, pred))
+    text_col5.text ( "・RMSE："+ str(new)  )
+
+    # グラフの可視化
+    fig5 = px.scatter(x=y_test, y=pred, 
+                      title="x軸：家賃[万円]　VS　　y軸：予測家賃[万円]",
+                      range_x=[0, ymax5],
+                      range_y=[0, ymax5],
+                 )    
+    gra_col5.plotly_chart(fig5, use_container_width=True) 
+
+else:
+    st.write('予測・比較グラフを出すには、ボタンを押してね。')
 
 
